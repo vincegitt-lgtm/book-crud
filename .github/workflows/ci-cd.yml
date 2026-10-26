@@ -19,14 +19,16 @@ jobs:
         run: docker build -t ionic-crud-latest .
 
       - name: Remove previous container
-        run: docker rm -f ionic-crud
+        run: |
+          docker rm -f ionic-crud
+          docker rm -f ionic-firebase-crud-container
         continue-on-error: true
 
       - name: Start updated container
         run: docker run -d --name ionic-crud --restart unless-stopped -p 8100:8100 ionic-crud-latest
 
       - name: Verify app
-        shell: pwsh
+        shell: powershell  # <--- ITO ANG BINAGO NATIN (powershell instead of pwsh)
         run: |
           $success = $false
           for ($i = 1; $i -le 15; $i++) {
