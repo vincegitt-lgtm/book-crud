@@ -1,0 +1,7 @@
+{
+  "name": "book-crud",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

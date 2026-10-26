@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add Book</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-input placeholder="Title" [(ngModel)]="newBook.title"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input placeholder="Author" [(ngModel)]="newBook.author"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-select placeholder="Genre" [(ngModel)]="newBook.genre">
+      <ion-select-option value="Fiction">Fiction</ion-select-option>
+      <ion-select-option value="Science">Science</ion-select-option>
+      <ion-select-option value="History">History</ion-select-option>
+      <ion-select-option value="Technology">Technology</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-input type="number" placeholder="Year" [(ngModel)]="newBook.year"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-select placeholder="Status" [(ngModel)]="newBook.status">
+      <ion-select-option value="Available">Available</ion-select-option>
+      <ion-select-option value="Borrowed">Borrowed</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button expand="block" class="ion-margin-top" (click)="addBook()">Add Book</ion-button>
+</ion-content>
