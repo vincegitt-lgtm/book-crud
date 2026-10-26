@@ -34,8 +34,9 @@ export class Tab2Page {
   }
 
   subscribeToBooks() {
-    onSnapshot(booksCol, snapshot => {
-      this.books = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    // Nilagyan natin ng : any ang snapshot at d para hindi mag-error sa TypeScript
+    onSnapshot(booksCol, (snapshot: any) => {
+      this.books = snapshot.docs.map((d: any) => ({ id: d.id, ...d.data() }));
       this.applyFilter();
     });
   }
