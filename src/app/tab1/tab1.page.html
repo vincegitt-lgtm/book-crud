@@ -1,61 +1,52 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Add New Book</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar style="--background: #F7F9F7; --color: #2B2B2B;">
+    <ion-title style="font-weight: 700; letter-spacing: -0.5px;">Add New Book</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" style="--background: #f4f5f8;">
+<ion-content class="ion-padding" style="--background: #F7F9F7; --color: #2B2B2B;">
   
-  <ion-card style="border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin: 0;">
-    <ion-card-header>
-      <ion-card-subtitle>Library Management</ion-card-subtitle>
-      <ion-card-title>Book Details</ion-card-title>
-    </ion-card-header>
+  <div style="background: #FFFFFF; border-radius: 16px; padding: 10px 0; margin-top: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.03);">
+    
+    <ion-item lines="none" style="--background: transparent; --color: #2B2B2B;">
+      <ion-icon name="book-outline" slot="start" style="color: #4A7C59;"></ion-icon>
+      <ion-input label="Book Title" label-placement="floating" placeholder="Enter title" [(ngModel)]="newBook.title"></ion-input>
+    </ion-item>
 
-    <ion-card-content>
-      <!-- Title -->
-      <ion-item lines="none" style="background: transparent;">
-        <ion-icon name="book-outline" slot="start" color="primary"></ion-icon>
-        <ion-input label="Book Title" label-placement="floating" placeholder="Enter title" [(ngModel)]="newBook.title" required></ion-input>
-      </ion-item>
+    <ion-item lines="none" style="--background: transparent; --color: #2B2B2B;">
+      <ion-icon name="person-outline" slot="start" style="color: #4A7C59;"></ion-icon>
+      <ion-input label="Author" label-placement="floating" placeholder="Enter author" [(ngModel)]="newBook.author"></ion-input>
+    </ion-item>
 
-      <!-- Author -->
-      <ion-item lines="none" style="background: transparent;">
-        <ion-icon name="person-outline" slot="start" color="primary"></ion-icon>
-        <ion-input label="Author" label-placement="floating" placeholder="Enter author" [(ngModel)]="newBook.author" required></ion-input>
-      </ion-item>
+    <ion-item lines="none" style="--background: transparent; --color: #2B2B2B;">
+      <ion-icon name="pricetag-outline" slot="start" style="color: #4A7C59;"></ion-icon>
+      <ion-select label="Genre" label-placement="floating" placeholder="Select Genre" [(ngModel)]="newBook.genre">
+        <ion-select-option value="Fiction">Fiction</ion-select-option>
+        <ion-select-option value="Science">Science</ion-select-option>
+        <ion-select-option value="History">History</ion-select-option>
+        <ion-select-option value="Technology">Technology</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-      <!-- Genre -->
-      <ion-item lines="none" style="background: transparent;">
-        <ion-icon name="pricetag-outline" slot="start" color="primary"></ion-icon>
-        <ion-select label="Genre" label-placement="floating" placeholder="Select Genre" [(ngModel)]="newBook.genre">
-          <ion-select-option value="Fiction">Fiction</ion-select-option>
-          <ion-select-option value="Science">Science</ion-select-option>
-          <ion-select-option value="History">History</ion-select-option>
-          <ion-select-option value="Technology">Technology</ion-select-option>
-        </ion-select>
-      </ion-item>
+    <ion-item lines="none" style="--background: transparent; --color: #2B2B2B;">
+      <ion-icon name="calendar-outline" slot="start" style="color: #4A7C59;"></ion-icon>
+      <ion-input label="Year" label-placement="floating" type="number" placeholder="e.g. 2024" [(ngModel)]="newBook.year"></ion-input>
+    </ion-item>
 
-      <!-- Year -->
-      <ion-item lines="none" style="background: transparent;">
-        <ion-icon name="calendar-outline" slot="start" color="primary"></ion-icon>
-        <ion-input label="Year" label-placement="floating" type="number" placeholder="e.g. 2024" [(ngModel)]="newBook.year"></ion-input>
-      </ion-item>
+    <ion-item lines="none" style="--background: transparent; --color: #2B2B2B;">
+      <ion-icon name="checkmark-circle-outline" slot="start" style="color: #4A7C59;"></ion-icon>
+      <ion-select label="Status" label-placement="floating" placeholder="Select Status" [(ngModel)]="newBook.status">
+        <ion-select-option value="Available">Available</ion-select-option>
+        <ion-select-option value="Borrowed">Borrowed</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-      <!-- Status -->
-      <ion-item lines="none" style="background: transparent;">
-        <ion-icon name="checkmark-circle-outline" slot="start" color="primary"></ion-icon>
-        <ion-select label="Status" label-placement="floating" placeholder="Select Status" [(ngModel)]="newBook.status">
-          <ion-select-option value="Available">Available</ion-select-option>
-          <ion-select-option value="Borrowed">Borrowed</ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
+  </div>
 
-  <ion-button expand="block" shape="round" class="ion-margin-top" (click)="addBook()" style="height: 50px; font-weight: bold;">
+  <ion-button expand="block" shape="round" class="ion-margin-top" (click)="addBook()" 
+    style="--background: #4A7C59; --color: #FFFFFF; height: 50px; font-weight: 600; margin-top: 30px;">
     <ion-icon name="add-circle-outline" slot="start"></ion-icon>
-    Add Book to Library
+    Add Book
   </ion-button>
 
 </ion-content>
