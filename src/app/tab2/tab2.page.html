@@ -2,9 +2,90 @@
   <ion-toolbar>
     <ion-title>Books</ion-title>
   </ion-toolbar>
+  <ion-toolbar><ion-header>
+  <ion-toolbar>
+    <ion-title>Books</ion-title>
+  </ion-toolbar>
   <ion-toolbar>
     <ion-searchbar placeholder="Search by title or author" (ionInput)="onSearch($event)"></ion-searchbar>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [value]="selectedGenre" (ionChange)="onGenreChange($event)">
+      <ion-segment-button value="All"><ion-label>All</ion-label></ion-segment-button>
+      <ion-segment-button value="Fiction"><ion-label>Fiction</ion-label></ion-segment-button>
+      <ion-segment-button value="Science"><ion-label>Science</ion-label></ion-segment-button>
+      <ion-segment-button value="History"><ion-label>History</ion-label></ion-segment-button>
+      <ion-segment-button value="Technology"><ion-label>Tech</ion-label></ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    <ion-item *ngFor="let book of filteredBooks">
+      <ion-label>
+        <h2>{{ book.title }}</h2>
+        <p>{{ book.author }} — {{ book.year }}</p>
+        <p>
+          <ion-badge [color]="book.status === 'Available' ? 'success' : 'warning'">{{ book.status }}</ion-badge> 
+          &nbsp;
+          <ion-badge color="medium">{{ book.genre }}</ion-badge>
+        </p>
+      </ion-label>
+      
+      <!-- Dito natin inilagay ang Update at Delete button -->
+      <div style="display: flex; gap: 5px;">
+        <ion-button size="small" fill="outline" (click)="openEdit(book)">Update</ion-button>
+        <ion-button size="small" color="danger" fill="outline" (click)="deleteBook(book.id)">Delete</ion-button>
+      </div>
+      
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="filteredBooks.length === 0" color="medium">
+    <p>No books found.</p>
+  </ion-text>
+
+  <!-- Edit Modal (Walang binago dito) -->
+  <ion-modal #editModal>
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Edit Book</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeEdit()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding" *ngIf="editBook">
+        <ion-item><ion-input placeholder="Title" [(ngModel)]="editBook.title"></ion-input></ion-item>
+        <ion-item><ion-input placeholder="Author" [(ngModel)]="editBook.author"></ion-input></ion-item>
+        <ion-item>
+          <ion-select placeholder="Genre" [(ngModel)]="editBook.genre">
+            <ion-select-option value="Fiction">Fiction</ion-select-option>
+            <ion-select-option value="Science">Science</ion-select-option>
+            <ion-select-option value="History">History</ion-select-option>
+            <ion-select-option value="Technology">Technology</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item><ion-input type="number" placeholder="Year" [(ngModel)]="editBook.year"></ion-input></ion-item>
+        <ion-item>
+          <ion-select placeholder="Status" [(ngModel)]="editBook.status">
+            <ion-select-option value="Available">Available</ion-select-option>
+            <ion-select-option value="Borrowed">Borrowed</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-button expand="block" class="ion-margin-top" (click)="saveEdit()">Save Changes</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+    <ion-searchbar placeholder="Search by title or author" (ionInput)="onSearch($event)"></ion-searchbar>
+  </ion-toolbar> 
   <ion-toolbar>
     <ion-segment [value]="selectedGenre" (ionChange)="onGenreChange($event)">
       <ion-segment-button value="All"><ion-label>All</ion-label></ion-segment-button>
