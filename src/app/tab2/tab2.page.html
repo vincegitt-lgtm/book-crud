@@ -1,12 +1,14 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Books</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>My Library</ion-title>
   </ion-toolbar>
+  
   <ion-toolbar>
     <ion-searchbar placeholder="Search by title or author" (ionInput)="onSearch($event)"></ion-searchbar>
   </ion-toolbar>
+  
   <ion-toolbar>
-    <ion-segment [value]="selectedGenre" (ionChange)="onGenreChange($event)">
+    <ion-segment [value]="selectedGenre" (ionChange)="onGenreChange($event)" scrollable="true" style="padding: 0 10px;">
       <ion-segment-button value="All"><ion-label>All</ion-label></ion-segment-button>
       <ion-segment-button value="Fiction"><ion-label>Fiction</ion-label></ion-segment-button>
       <ion-segment-button value="Science"><ion-label>Science</ion-label></ion-segment-button>
@@ -16,42 +18,65 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" style="--background: #f4f5f8;">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
-    <!-- Inalis natin ang ion-item-sliding para permanenteng nakalabas ang buttons -->
-    <ion-item *ngFor="let book of filteredBooks">
-      <ion-label>
-        <h2>{{ book.title }}</h2>
-        <p>{{ book.author }} — {{ book.year }}</p>
-        <p>
-          <ion-badge [color]="book.status === 'Available' ? 'success' : 'warning'">{{ book.status }}</ion-badge> 
-          &nbsp;
-          <ion-badge color="medium">{{ book.genre }}</ion-badge>
-        </p>
-      </ion-label>
-      
-      <!-- NARITO NA ANG UPDATE AT DELETE BUTTONS -->
-      <div style="display: flex; flex-direction: column; gap: 5px; padding: 5px 0;">
-        <ion-button size="small" fill="outline" style="margin: 0;" (click)="openEdit(book)">Update</ion-button>
-        <ion-button size="small" color="danger" fill="outline" style="margin: 0;" (click)="deleteBook(book.id)">Delete</ion-button>
+  <!-- Ite-treat natin ang bawat book bilang isang card -->
+  <ion-card *ngFor="let book of filteredBooks" style="border-radius: 12px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    
+    <ion-card-header style="padding-bottom: 0;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <ion-card-title style="font-size: 1.2rem; font-weight: 700;">{{ book.title }}</ion-card-title>
+        <ion-badge [color]="book.status === 'Available' ? 'success' : 'warning'" style="padding: 6px 10px;">
+          {{ book.status }}
+        </ion-badge>
       </div>
-      
-    </ion-item>
-  </ion-list>
+      <ion-card-subtitle style="margin-top: 5px;">
+        <ion-icon name="person" style="vertical-align: middle; margin-right: 4px;"></ion-icon>
+        {{ book.author }}
+      </ion-card-subtitle>
+    </ion-card-header>
 
-  <ion-text *ngIf="filteredBooks.length === 0" color="medium">
-    <p>No books found.</p>
-  </ion-text>
+    <ion-card-content>
+      <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+        <ion-badge color="tertiary" style="padding: 6px 10px;">
+          <ion-icon name="pricetag" style="vertical-align: middle; margin-right: 4px;"></ion-icon>
+          {{ book.genre }}
+        </ion-badge>
+        <ion-badge color="medium" style="padding: 6px 10px;">
+          <ion-icon name="calendar" style="vertical-align: middle; margin-right: 4px;"></ion-icon>
+          {{ book.year }}
+        </ion-badge>
+      </div>
 
-  <!-- Edit Modal -->
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 10px;">
+        <ion-button expand="block" size="small" fill="outline" style="flex: 1; margin: 0;" (click)="openEdit(book)">
+          <ion-icon name="create-outline" slot="start"></ion-icon>
+          Edit
+        </ion-button>
+        <ion-button expand="block" size="small" color="danger" style="flex: 1; margin: 0;" (click)="deleteBook(book.id)">
+          <ion-icon name="trash-outline" slot="start"></ion-icon>
+          Delete
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredBooks.length === 0" style="text-align: center; margin-top: 50px; color: #888;">
+    <ion-icon name="folder-open-outline" style="font-size: 64px; margin-bottom: 10px;"></ion-icon>
+    <h3>No books found</h3>
+    <p>Add a new book or try a different search.</p>
+  </div>
+
+  <!-- Edit Modal (Pinaganda rin natin nang konti) -->
   <ion-modal #editModal>
     <ng-template>
       <ion-header>
-        <ion-toolbar>
+        <ion-toolbar color="primary">
           <ion-title>Edit Book</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="closeEdit()">Close</ion-button>
@@ -59,24 +84,33 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding" *ngIf="editBook">
-        <ion-item><ion-input placeholder="Title" [(ngModel)]="editBook.title"></ion-input></ion-item>
-        <ion-item><ion-input placeholder="Author" [(ngModel)]="editBook.author"></ion-input></ion-item>
         <ion-item>
-          <ion-select placeholder="Genre" [(ngModel)]="editBook.genre">
+          <ion-input label="Title" label-placement="floating" [(ngModel)]="editBook.title"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Author" label-placement="floating" [(ngModel)]="editBook.author"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-select label="Genre" label-placement="floating" [(ngModel)]="editBook.genre">
             <ion-select-option value="Fiction">Fiction</ion-select-option>
             <ion-select-option value="Science">Science</ion-select-option>
             <ion-select-option value="History">History</ion-select-option>
             <ion-select-option value="Technology">Technology</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item><ion-input type="number" placeholder="Year" [(ngModel)]="editBook.year"></ion-input></ion-item>
         <ion-item>
-          <ion-select placeholder="Status" [(ngModel)]="editBook.status">
+          <ion-input label="Year" label-placement="floating" type="number" [(ngModel)]="editBook.year"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-select label="Status" label-placement="floating" [(ngModel)]="editBook.status">
             <ion-select-option value="Available">Available</ion-select-option>
             <ion-select-option value="Borrowed">Borrowed</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-button expand="block" class="ion-margin-top" (click)="saveEdit()">Save Changes</ion-button>
+        
+        <ion-button expand="block" shape="round" class="ion-margin-top" (click)="saveEdit()">
+          Save Changes
+        </ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
